@@ -13,6 +13,7 @@ void main() async {
       clientKey: keyClientKey, debug: true);
 
   runApp(MaterialApp(
+    debugShowCheckedModeBanner: false,
     home: Home(),
   ));
 }
