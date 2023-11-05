@@ -25,18 +25,21 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   final todoController = TextEditingController();
+  final descrptionController = TextEditingController();
 
   void addToDo() async {
     if (todoController.text.trim().isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text("Please enter a task"),
+        content: Text("Please enter a task and description"),
         duration: Duration(seconds: 2),
       ));
+
       return;
     }
-    await saveTodo(todoController.text);
+    await saveTodo(todoController.text, descrptionController.text);
     setState(() {
       todoController.clear();
+      descrptionController.clear();
     });
   }
 
@@ -61,6 +64,16 @@ class _HomeState extends State<Home> {
                       controller: todoController,
                       decoration: InputDecoration(
                           labelText: "Enter the task here",
+                          labelStyle: TextStyle(color: Colors.blueAccent)),
+                    ),
+                  ),
+                  Expanded(
+                    child: TextField(
+                      autocorrect: true,
+                      textCapitalization: TextCapitalization.sentences,
+                      controller: descrptionController,
+                      decoration: InputDecoration(
+                          labelText: "Enter the description here",
                           labelStyle: TextStyle(color: Colors.blueAccent)),
                     ),
                   ),
@@ -105,11 +118,14 @@ class _HomeState extends State<Home> {
                                 //Get Parse Object Values
                                 final varTodo = snapshot.data![index];
                                 final varTitle = varTodo.get<String>('title')!;
+                                final varDescrption =
+                                    varTodo.get<String>('description')!;
                                 final varDone = varTodo.get<bool>('done')!;
                                 //*************************************
 
                                 return ListTile(
                                   title: Text(varTitle),
+                                  subtitle: Text(varDescrption),
                                   leading: CircleAvatar(
                                     child: Icon(
                                         varDone ? Icons.check : Icons.error),
@@ -161,10 +177,11 @@ class _HomeState extends State<Home> {
     );
   }
 
-  Future<void> saveTodo(String title) async {
+  Future<void> saveTodo(String title, String description) async {
     final todo = ParseObject('Todo')
       ..set('title', title)
-      ..set('done', false);
+      ..set('done', false)
+      ..set('description', description);
     await todo.save();
   }
 
