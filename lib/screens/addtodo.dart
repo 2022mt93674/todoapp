@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_todo/main.dart';
 import 'package:parse_server_sdk/parse_server_sdk.dart';
 
 class AddToDoPage extends StatefulWidget {
@@ -77,5 +78,9 @@ class _AddToDoPageState extends State<AddToDoPage> {
       ..set('done', false)
       ..set('description', description);
     todo.save();
+
+    final route = MaterialPageRoute(builder: (context) => Home());
+
+    Navigator.push(context, route);
   }
 }
