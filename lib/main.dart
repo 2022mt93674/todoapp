@@ -48,7 +48,7 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Your Todo List. Have a good day !"),
+        title: Text("Your Todo List. Have a Good day !"),
         backgroundColor: Color.fromARGB(255, 60, 102, 218),
         centerTitle: true,
       ),
