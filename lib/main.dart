@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter_todo/screens/addtodo.dart';
 import 'package:parse_server_sdk/parse_server_sdk.dart';
 
 void main() async {
@@ -51,41 +52,10 @@ class _HomeState extends State<Home> {
         backgroundColor: Color.fromARGB(255, 60, 102, 218),
         centerTitle: true,
       ),
+      floatingActionButton: FloatingActionButton.extended(
+          onPressed: navigateToAddPage, label: Text('Add Task')),
       body: Column(
         children: <Widget>[
-          Container(
-              padding: EdgeInsets.fromLTRB(17.0, 1.0, 7.0, 1.0),
-              child: Row(
-                children: <Widget>[
-                  Expanded(
-                    child: TextField(
-                      autocorrect: true,
-                      textCapitalization: TextCapitalization.sentences,
-                      controller: todoController,
-                      decoration: InputDecoration(
-                          labelText: "Enter the task here",
-                          labelStyle: TextStyle(color: Colors.blueAccent)),
-                    ),
-                  ),
-                  Expanded(
-                    child: TextField(
-                      autocorrect: true,
-                      textCapitalization: TextCapitalization.sentences,
-                      controller: descrptionController,
-                      decoration: InputDecoration(
-                          labelText: "Enter the description here",
-                          labelStyle: TextStyle(color: Colors.blueAccent)),
-                    ),
-                  ),
-                  ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        onPrimary: Colors.white,
-                        primary: Colors.blueAccent,
-                      ),
-                      onPressed: addToDo,
-                      child: Text("ADD")),
-                ],
-              )),
           Expanded(
               child: FutureBuilder<List<ParseObject>>(
                   future: getTodo(),
@@ -206,5 +176,13 @@ class _HomeState extends State<Home> {
   Future<void> deleteTodo(String id) async {
     var todo = ParseObject('Todo')..objectId = id;
     await todo.delete();
+  }
+
+  void navigateToAddPage() {
+    final route = MaterialPageRoute(
+      builder: (context) => AddToDoPage(),
+    );
+
+    Navigator.push(context, route);
   }
 }
