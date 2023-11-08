@@ -1,6 +1,8 @@
 import 'dart:async';
+import 'dart:html';
 import 'package:flutter/material.dart';
 import 'package:flutter_todo/screens/addtodo.dart';
+import 'package:flutter_todo/screens/edittodo.dart';
 import 'package:parse_server_sdk/parse_server_sdk.dart';
 
 void main() async {
@@ -15,11 +17,17 @@ void main() async {
 
   runApp(MaterialApp(
     debugShowCheckedModeBanner: false,
-    home: Home(),
+    home: Home(
+      refresh: false,
+    ),
   ));
 }
 
 class Home extends StatefulWidget {
+  var refresh = false;
+
+  Home({super.key, required this.refresh});
+
   @override
   _HomeState createState() => _HomeState();
 }
@@ -53,7 +61,10 @@ class _HomeState extends State<Home> {
         centerTitle: true,
       ),
       floatingActionButton: FloatingActionButton.extended(
-          onPressed: navigateToAddPage, label: Text('Add Task')),
+          onPressed: () {
+            navigateToAddPage();
+          },
+          label: Text('Add Task')),
       body: Column(
         children: <Widget>[
           Expanded(
@@ -115,6 +126,15 @@ class _HomeState extends State<Home> {
                                             setState(() {
                                               //Refresh UI
                                             });
+                                          }),
+                                      IconButton(
+                                          icon: Icon(
+                                            Icons.edit,
+                                            color: Color.fromARGB(
+                                                255, 33, 54, 243),
+                                          ),
+                                          onPressed: () {
+                                            navigateToEditPage(varTodo);
                                           }),
                                       IconButton(
                                         icon: Icon(
@@ -181,6 +201,14 @@ class _HomeState extends State<Home> {
   void navigateToAddPage() {
     final route = MaterialPageRoute(
       builder: (context) => AddToDoPage(),
+    );
+
+    Navigator.push(context, route);
+  }
+
+  void navigateToEditPage(vartodo1) {
+    final route = MaterialPageRoute(
+      builder: (context) => EditToDoPage(vartodo: vartodo1),
     );
 
     Navigator.push(context, route);

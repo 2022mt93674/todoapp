@@ -2,13 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_todo/main.dart';
 import 'package:parse_server_sdk/parse_server_sdk.dart';
 
-class AddToDoPage extends StatefulWidget {
-  AddToDoPage({super.key});
+class EditToDoPage extends StatefulWidget {
+  var vartodo;
+
+  EditToDoPage({super.key, this.vartodo});
   @override
-  State<AddToDoPage> createState() => _AddToDoPageState();
+  State<EditToDoPage> createState() => _EditToDoPageState();
 }
 
-class _AddToDoPageState extends State<AddToDoPage> {
+class _EditToDoPageState extends State<EditToDoPage> {
   TextEditingController titleController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
 
@@ -16,24 +18,23 @@ class _AddToDoPageState extends State<AddToDoPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text('Add Todo'),
+          title: Text('Edit Todo'),
         ),
         body: ListView(
           padding: EdgeInsets.all(20),
           children: [
             TextField(
-              controller: titleController,
-              decoration: InputDecoration(hintText: 'Enter Task Title'),
+              controller: titleController..text = widget.vartodo.get("title"),
             ),
             TextField(
-              controller: descriptionController,
-              decoration: InputDecoration(hintText: 'Enter Task Description'),
+              controller: descriptionController
+                ..text = widget.vartodo.get("description"),
               keyboardType: TextInputType.multiline,
               minLines: 5,
               maxLines: 8,
             ),
             SizedBox(height: 20),
-            ElevatedButton(onPressed: submitData, child: Text('Submit'))
+            ElevatedButton(onPressed: submitData, child: Text('Update'))
           ],
         ));
   }
@@ -49,6 +50,7 @@ class _AddToDoPageState extends State<AddToDoPage> {
 
     final title = titleController.text;
     final description = descriptionController.text;
+    final id = widget.vartodo.get("objectId");
 
     //check for empty task
     if (title.trim().isEmpty) {
@@ -59,7 +61,7 @@ class _AddToDoPageState extends State<AddToDoPage> {
 
       return;
     }
-    await saveToDo(title, description);
+    await updateToDo(id, title, description);
     {
       setState(() {
         titleController.clear();
@@ -72,8 +74,9 @@ class _AddToDoPageState extends State<AddToDoPage> {
     //Show success or failure message
   }
 
-  saveToDo(String title, String description) {
+  updateToDo(String id, String title, String description) {
     final todo = ParseObject('Todo')
+      ..objectId = id
       ..set('title', title)
       ..set('done', false)
       ..set('description', description);
