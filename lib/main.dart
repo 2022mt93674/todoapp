@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:html';
 import 'package:flutter/material.dart';
 import 'package:flutter_todo/screens/addtodo.dart';
 import 'package:flutter_todo/screens/edittodo.dart';
@@ -19,14 +18,15 @@ void main() async {
     debugShowCheckedModeBanner: false,
     home: Home(
       refresh: false,
+      maintainState: false,
     ),
   ));
 }
 
 class Home extends StatefulWidget {
-  var refresh = false;
+  //var refresh = false;
 
-  Home({super.key, required this.refresh});
+  Home({super.key, required refresh, required bool maintainState});
 
   @override
   _HomeState createState() => _HomeState();
@@ -203,7 +203,7 @@ class _HomeState extends State<Home> {
       builder: (context) => AddToDoPage(),
     );
 
-    Navigator.push(context, route);
+    Navigator.push(context, route).then((value) => setState(() {}));
   }
 
   void navigateToEditPage(vartodo1) {
@@ -211,6 +211,6 @@ class _HomeState extends State<Home> {
       builder: (context) => EditToDoPage(vartodo: vartodo1),
     );
 
-    Navigator.push(context, route);
+    Navigator.push(context, route).then((value) => setState(() {}));
   }
 }

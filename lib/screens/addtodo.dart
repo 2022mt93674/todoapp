@@ -79,8 +79,12 @@ class _AddToDoPageState extends State<AddToDoPage> {
       ..set('description', description);
     todo.save();
 
-    final route = MaterialPageRoute(builder: (context) => Home(refresh: true));
+    final route = MaterialPageRoute(
+        builder: (context) => Home(refresh: true, maintainState: false));
 
-    Navigator.push(context, route);
+    Navigator.push(
+      context,
+      route,
+    );
   }
 }

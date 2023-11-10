@@ -82,8 +82,17 @@ class _EditToDoPageState extends State<EditToDoPage> {
       ..set('description', description);
     todo.save();
 
-    final route = MaterialPageRoute(builder: (context) => Home(refresh: true));
+    setState(() {
+      titleController.clear();
+      descriptionController.clear();
+    });
 
-    Navigator.push(context, route);
+    final route = MaterialPageRoute(
+        builder: (context) => Home(refresh: true, maintainState: false));
+
+    Navigator.push(
+      context,
+      route,
+    );
   }
 }
