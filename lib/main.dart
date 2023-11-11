@@ -92,7 +92,7 @@ class _HomeState extends State<Home> {
                           );
                         } else {
                           return ListView.builder(
-                              padding: EdgeInsets.only(top: 10.0),
+                              padding: EdgeInsets.only(top: 20.0),
                               itemCount: snapshot.data!.length,
                               itemBuilder: (context, index) {
                                 //*************************************
@@ -105,8 +105,20 @@ class _HomeState extends State<Home> {
                                 //*************************************
 
                                 return ListTile(
-                                  title: Text(varTitle),
-                                  subtitle: Text(varDescrption),
+                                  title: Text(
+                                    varTitle,
+                                    maxLines: 2,
+                                    softWrap: true,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                  horizontalTitleGap: 10,
+                                  minLeadingWidth: 10,
+                                  subtitle: Text(
+                                    varDescrption,
+                                    maxLines: 3,
+                                    softWrap: true,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
                                   leading: CircleAvatar(
                                     child: Icon(
                                         varDone ? Icons.check : Icons.error),
@@ -116,6 +128,7 @@ class _HomeState extends State<Home> {
                                     foregroundColor: Colors.white,
                                   ),
                                   trailing: Row(
+                                    mainAxisAlignment: MainAxisAlignment.end,
                                     mainAxisSize: MainAxisSize.min,
                                     children: [
                                       Checkbox(
@@ -146,7 +159,7 @@ class _HomeState extends State<Home> {
                                           await deleteTodo(varTodo.objectId!);
                                           setState(() {
                                             final snackBar = SnackBar(
-                                              content: Text("Todo deleted!"),
+                                              content: Text("Task deleted!"),
                                               duration: Duration(seconds: 2),
                                             );
                                             ScaffoldMessenger.of(context)
